@@ -35,41 +35,51 @@ func run() {
 		panic(err)
 	}
 
-	pic, err := loadPicture("per.png")
+	pic, err := loadPicture("pictures/person/farme.png")
+	if err != nil {
+		panic(err)
+	}
+
+	stockImg, err := loadPicture("pictures/menu/stock.png")
 	if err != nil {
 		panic(err)
 	}
 
 	sprite := pixel.NewSprite(pic, pic.Bounds())
 
-	win.Clear(colornames.Greenyellow)
-	spritePos := pixel.V(400, 300)
-	sprite.Draw(win, pixel.IM.Moved(spritePos))
+	stock := pixel.NewSprite(stockImg, stockImg.Bounds())
+
+	win.Clear(colornames.Green)
+
+	farmPos := pixel.V(400, 300)
+	stockPos := pixel.V(970, 710)
+
+	sprite.Draw(win, pixel.IM.Moved(farmPos))
+	stock.Draw(win, pixel.IM.Moved(stockPos))
+
 	for !win.Closed() {
 		// Обработка событий клавиатуры
-		if win.Pressed(pixelgl.KeyLeft) {
-			spritePos.X -= 5
+		if win.Pressed(pixelgl.KeyA) {
+			farmPos.X -= 5
 		}
-		if win.Pressed(pixelgl.KeyRight) {
-			spritePos.X += 5
+		if win.Pressed(pixelgl.KeyD) {
+			farmPos.X += 5
 		}
-		if win.Pressed(pixelgl.KeyUp) {
-			spritePos.Y += 5
+		if win.Pressed(pixelgl.KeyW) {
+			farmPos.Y += 5
 		}
-		if win.Pressed(pixelgl.KeyDown) {
-			spritePos.Y -= 5
+		if win.Pressed(pixelgl.KeyS) {
+			farmPos.Y -= 5
 		}
 
 		// Очистка экрана
-		win.Clear(colornames.Greenyellow)
+		win.Clear(colornames.Green)
 
 		// Рисование спрайта на новой позиции
-		sprite.Draw(win, pixel.IM.Moved(spritePos))
+		sprite.Draw(win, pixel.IM.Moved(farmPos))
+		stock.Draw(win, pixel.IM.Moved(stockPos))
 
 		// Обновление экрана
-		win.Update()
-	}
-	for !win.Closed() {
 		win.Update()
 	}
 }
