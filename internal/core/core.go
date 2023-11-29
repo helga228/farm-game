@@ -1,13 +1,14 @@
 package core
 
 import (
+	"ferma/internal/entity"
+	"github.com/faiface/pixel/pixelgl"
+	"golang.org/x/image/colornames"
 	"image"
 	_ "image/png"
 	"os"
 
 	"github.com/faiface/pixel"
-	"github.com/faiface/pixel/pixelgl"
-	"golang.org/x/image/colornames"
 )
 
 func loadPicture(path string) (pixel.Picture, error) {
@@ -23,19 +24,18 @@ func loadPicture(path string) (pixel.Picture, error) {
 	return pixel.PictureDataFromImage(img), nil
 }
 
-func Run() {
-
-	cfg := pixelgl.WindowConfig{
-		Title:  "Pixel Rocks!",
-		Bounds: pixel.R(0, 0, 1024, 768),
-		VSync:  true,
-	}
-	win, err := pixelgl.NewWindow(cfg)
+func getPerson(user entity.User) (pixel.Picture, error) {
+	path := "pictures/person/" + user.Pers + ".png"
+	pic, err := loadPicture(path)
 	if err != nil {
 		panic(err)
 	}
+	return pic, nil
+}
 
-	pic, err := loadPicture("pictures/person/farmer_f.png")
+func StartGame(user entity.User, win *pixelgl.Window) {
+
+	person, err := getPerson(user)
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +45,7 @@ func Run() {
 		panic(err)
 	}
 
-	sprite := pixel.NewSprite(pic, pic.Bounds())
+	sprite := pixel.NewSprite(person, person.Bounds())
 
 	stock := pixel.NewSprite(stockImg, stockImg.Bounds())
 
